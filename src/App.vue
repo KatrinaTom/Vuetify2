@@ -13,7 +13,7 @@
 
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title>Application</v-app-bar-title>
+      <v-app-bar-title>Vuetify To Do</v-app-bar-title>
     </v-app-bar>
 
     <v-main>
@@ -38,7 +38,23 @@ export default {
 </script>
 
 <style>
+.v-btn__content {
+  color: white;
+}
+
 .v-app-bar-title__content {
   width: 200px;
+  color: white;
+}
+
+.v-toolbar {
+  background-image: linear-gradient(
+      to top right,
+      rgba(19, 84, 122, 0.8),
+      rgba(128, 208, 199, 0.8)
+    ),
+    url("https://picsum.photos/1920/1080?random");
+  background-size: cover;
+  background-position: center;
 }
 </style>
