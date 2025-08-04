@@ -12,11 +12,11 @@
       clearable
     >
     </v-text-field>
-    <v-list two-line flat>
+    <v-list two-line flat v-if="$store.state.tasks.length > 0">
       <v-list-item
-        v-for="task in tasks"
+        v-for="task in $store.state.tasks"
         :key="task.id"
-        @click="doneTask(task.id)"
+        @click="$store.commit('doneTask', task.id)"
         :class="{ 'blue lighten-5': task.done }"
       >
         <template v-slot:default>
@@ -32,13 +32,21 @@
           </v-list-item-content>
 
           <v-list-item-action>
-            <v-btn icon @click.stop="deleteTask(task.id)">
+            <v-btn icon @click.stop="$store.commit('deleteTask', task.id)">
               <v-icon color="primary lighten-1">mdi-delete</v-icon>
             </v-btn>
           </v-list-item-action>
         </template>
       </v-list-item>
     </v-list>
+
+    <div v-else class="pa-10">
+      <div class="primary--text no-tasks">
+        <v-icon color="green darken-2 p-5" size="50px">mdi-check-circle</v-icon>
+        <div class="text-h5 p-5">Congratulations!</div>
+        <div class="p-5">Tasks Completed</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -47,46 +55,20 @@ export default {
   data() {
     return {
       newTask: "",
-      tasks: [
-        {
-          id: 1,
-          title: "Drink coffee",
-          done: false,
-        },
-        {
-          id: 2,
-          title: "Take dog for a walk",
-          done: false,
-        },
-        {
-          id: 3,
-          title: "Study",
-          done: false,
-        },
-      ],
     };
   },
   methods: {
     addTask() {
-      if (this.newTask.trim() === "") return;
-
-      const newTask = {
-        id: Date.now(),
-        title: this.newTask,
-        done: false,
-      };
-      this.tasks.push(newTask);
+      this.$store.commit("addTask", this.newTask);
       this.newTask = "";
-    },
-    doneTask(id) {
-      const task = this.tasks.find((task) => task.id === id);
-      if (task) {
-        task.done = !task.done;
-      }
-    },
-    deleteTask(id) {
-      this.tasks = this.tasks.filter((task) => task.id !== id);
     },
   },
 };
 </script>
+
+<style lang="scss">
+.no-tasks {
+  text-align: center;
+  margin-top: 20px;
+}
+</style>
